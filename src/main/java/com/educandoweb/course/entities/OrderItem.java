@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.educandoweb.course.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -15,7 +16,7 @@ public class OrderItem implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private OrderItemPK id;
+	private OrderItemPK orderItemPK = new OrderItemPK();
 	
 	private Integer quantity;
 	private Double price;
@@ -26,26 +27,27 @@ public class OrderItem implements Serializable{
 
 	public OrderItem(Order order, Product product, Integer quantity, Double price) {
 		super();
-		id.setOrder(order);
-		id.setProduct(product);
+		orderItemPK.setOrder(order);
+		orderItemPK.setProduct(product);
 		this.quantity = quantity;
 		this.price = price;
 	}
 	
+	@JsonIgnore
 	public Order getOrder() {
-		return id.getOrder();
+		return orderItemPK.getOrder();
 	}
 	
 	public void setOrder(Order order) {
-		id.setOrder(order);
+		orderItemPK.setOrder(order);
 	}
 	
 	public Product getProduct() {
-		return id.getProduct();
+		return orderItemPK.getProduct();
 	}
 	
 	public void setProduct(Product product) {
-		id.setProduct(product);
+		orderItemPK.setProduct(product);
 	}
 
 
@@ -67,7 +69,7 @@ public class OrderItem implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(orderItemPK);
 	}
 
 	@Override
@@ -79,7 +81,7 @@ public class OrderItem implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		OrderItem other = (OrderItem) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(orderItemPK, other.orderItemPK);
 	}
 	
 	
